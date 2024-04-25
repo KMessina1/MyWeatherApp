@@ -11,6 +11,7 @@
 		A4B02F4A2BD58975003F7619 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B02F492BD58975003F7619 /* ContentView.swift */; };
 		A4B02F4C2BD58977003F7619 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4B02F4B2BD58977003F7619 /* Assets.xcassets */; };
 		A4B02F4F2BD58977003F7619 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4B02F4E2BD58977003F7619 /* Preview Assets.xcassets */; };
+		A4B02F572BD58FC7003F7619 /* Weather_VM.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B02F562BD58FC7003F7619 /* Weather_VM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,8 @@
 		A4B02F492BD58975003F7619 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A4B02F4B2BD58977003F7619 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A4B02F4E2BD58977003F7619 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A4B02F552BD589C1003F7619 /* MyWeatherApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyWeatherApp.entitlements; sourceTree = "<group>"; };
+		A4B02F562BD58FC7003F7619 /* Weather_VM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather_VM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +54,10 @@
 		A4B02F462BD58975003F7619 /* MyWeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				A4B02F552BD589C1003F7619 /* MyWeatherApp.entitlements */,
 				A4B02F472BD58975003F7619 /* MyWeatherAppApp.swift */,
 				A4B02F492BD58975003F7619 /* ContentView.swift */,
+				A4B02F562BD58FC7003F7619 /* Weather_VM.swift */,
 				A4B02F4B2BD58977003F7619 /* Assets.xcassets */,
 				A4B02F4D2BD58977003F7619 /* Preview Content */,
 			);
@@ -137,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4B02F572BD58FC7003F7619 /* Weather_VM.swift in Sources */,
 				A4B02F4A2BD58975003F7619 /* ContentView.swift in Sources */,
 				A4B02F482BD58975003F7619 /* MyWeatherAppApp.swift in Sources */,
 			);
@@ -269,23 +275,28 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyWeatherApp/MyWeatherApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyWeatherApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 6Y2RTMNG22;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CAS_DEMO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To obtain your local weather conditions.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = us.creativeapps.weather.MyWeatherApp;
+				PRODUCT_BUNDLE_IDENTIFIER = us.creativeapps.weather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -298,23 +309,28 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyWeatherApp/MyWeatherApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyWeatherApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 6Y2RTMNG22;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CAS_DEMO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To obtain your local weather conditions.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = us.creativeapps.weather.MyWeatherApp;
+				PRODUCT_BUNDLE_IDENTIFIER = us.creativeapps.weather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

@@ -1,5 +1,3 @@
-//
-
 /*--------------------------------------------------------------------------------------------------------------------------
     File: MyWeatherAppApp.swift
   Author: Kevin Messina
@@ -11,15 +9,13 @@ Modified:
 NOTES:
 --------------------------------------------------------------------------------------------------------------------------*/
 
-
-
 import SwiftUI
 
 @main
 struct MyWeatherAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(weather: WeatherVM())
         }
     }
 }
