@@ -43,10 +43,12 @@ struct city {
     @Published var currentHumidity:String = ""
     @Published var currentWindSpeed:String = ""
     @Published var currentWindDirection:String = ""
+    @Published var currentWindDirectionAbbrev:String = ""
     @Published var currentWindDirImg:String = ""
     @Published var currentWindGust:String = ""
     @Published var asOf:Date = Date()
     @Published var currentPressure:String = ""
+    @Published var currentPressureTrendImg:String = ""
     @Published var currentPressureTrend:String = ""
     @Published var currentPressureState:String = ""
     @Published var currentPressureColor:Color = .white
@@ -96,14 +98,14 @@ struct city {
                     let directionSpeed = weather.currentWeather.wind.speed.converted(to: .milesPerHour).value
                     let windSpeed = directionSpeed.formatted(.number.precision(.fractionLength(1)))
                     switch windFrom {
-                        case "N": self.currentWindDirImg = "arrow.up.circle"
-                        case "NE","NNE": self.currentWindDirImg = "arrow.up.right.circle"
-                        case "E": self.currentWindDirImg = "arrow.right.circle"
-                        case "SE","SSE": self.currentWindDirImg = "arrow.down.right.circle"
-                        case "S": self.currentWindDirImg = "arrow.down.circle"
-                        case "SW","SSW": self.currentWindDirImg = "arrow.down.left.circle"
-                        case "W": self.currentWindDirImg = "arrow.left.circle"
-                        case "NW","NNW": self.currentWindDirImg = "arrow.up.left.circle"
+                        case "N": self.currentWindDirImg = "arrow.down.circle"
+                        case "NE","NNE","ENE": self.currentWindDirImg = "arrow.down.left.circle"
+                        case "E": self.currentWindDirImg = "arrow.left.circle"
+                        case "SE","SSE","ESE": self.currentWindDirImg = "arrow.up.left.circle"
+                        case "S": self.currentWindDirImg = "arrow.up.circle"
+                        case "SW","SSW","WSW": self.currentWindDirImg = "arrow.up.right.circle"
+                        case "W": self.currentWindDirImg = "arrow.right.circle"
+                        case "NW","NNW","WNW": self.currentWindDirImg = "arrow.down.right.circle"
                         default: self.currentWindDirImg = ""
                     }
                     let directionUnit = weather.currentWeather.wind.direction.unit.symbol
@@ -116,18 +118,19 @@ struct city {
                         self.currentPressureState = "L"
                         self.currentPressureColor = .blue
                     } else {
-                        self.currentPressureState = ""
-                        self.currentPressureColor = .white
+                        self.currentPressureState = "-"
+                        self.currentPressureColor = .green
                     }
-                    let pressureTrend = weather.currentWeather.pressureTrend.description.lowercased()
+                    self.currentPressureTrend = weather.currentWeather.pressureTrend.description
+                    let pressureTrend = self.currentPressureTrend.lowercased()
                     if pressureTrend == "rising" {
-                        self.currentPressureTrend = "arrow.up"
+                        self.currentPressureTrendImg = "arrow.up"
                     } else if pressureTrend == "falling" {
-                        self.currentPressureTrend = "arrow.down"
+                        self.currentPressureTrendImg = "arrow.down"
                     } else if pressureTrend == "steady" {
-                        self.currentPressureTrend = "equal"
+                        self.currentPressureTrendImg = "equal"
                     } else {
-                        self.currentPressureTrend = ""
+                        self.currentPressureTrendImg = ""
                     }
                     let dewPointNum = weather.currentWeather.dewPoint.converted(to: self.tempUnits).value
                     let dewPoint = dewPointNum.formatted(.number.precision(.fractionLength(0)))
@@ -144,7 +147,8 @@ struct city {
                     self.dailyHighLowFull = "High: \( self.currentHighTemp )  /  Low: \( self.currentLowTemp )"
                     self.currentHumidity = "\( humidity)%"
                     self.currentWindSpeed = "\( windSpeed ) mph"
-                    self.currentWindDirection = "\(windDir)\(directionUnit) \(windFrom)"
+                    self.currentWindDirection = "\(windDir)\(directionUnit) \(weather.currentWeather.wind.compassDirection)"
+                    self.currentWindDirectionAbbrev = "\(windFrom)"
                     self.asOf = weather.currentWeather.date
                     self.currentPressure = "\( pressure ) mb"
                     self.currentDewPoint = "\( dewPoint )°"
@@ -154,10 +158,12 @@ struct city {
                     weather.hourlyForecast.forecast.forEach { hour in
                         if self.hourlyForecast.count < 24 {
                             if self.isSameHourOrLater(date1: hour.date, date2: Date()) {
+                                let data = hour.temperature.converted(to: self.tempUnits).value.formatted(.number.precision(.fractionLength(0)))
+                                
                                 self.hourlyForecast.append(HourWeather(
                                     time: self.hourFormatter(date: hour.date),
                                     symbolName: hour.symbolName,
-                                    temperature: "\( hour.temperature.converted(to: self.tempUnits).value.formatted(.number.precision(.fractionLength(0))) )°"
+                                    temperature: "\( data )°"
                                 ))
                             }
                         }

@@ -15,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A4766C292BDC345300D7B68D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A4B02F442BD58975003F7619 /* MyWeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyWeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B02F472BD58975003F7619 /* MyWeatherAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWeatherAppApp.swift; sourceTree = "<group>"; };
 		A4B02F492BD58975003F7619 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,6 +55,7 @@
 		A4B02F462BD58975003F7619 /* MyWeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				A4766C292BDC345300D7B68D /* Info.plist */,
 				A4B02F552BD589C1003F7619 /* MyWeatherApp.entitlements */,
 				A4B02F472BD58975003F7619 /* MyWeatherAppApp.swift */,
 				A4B02F492BD58975003F7619 /* ContentView.swift */,
@@ -282,6 +284,7 @@
 				DEVELOPMENT_TEAM = 6Y2RTMNG22;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyWeatherApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CAS_DEMO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To obtain your local weather conditions.";
@@ -316,6 +319,7 @@
 				DEVELOPMENT_TEAM = 6Y2RTMNG22;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyWeatherApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CAS_DEMO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To obtain your local weather conditions.";

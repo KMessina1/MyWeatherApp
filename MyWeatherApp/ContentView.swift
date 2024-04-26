@@ -72,97 +72,187 @@ struct ContentView: View {
                             Text(weather.currentTemperature)
                                 .font(.system(size: 72, weight: .light))
                             
-                            Text("Currently: \(weather.currentCondition)")
+                            Text("Currently \(weather.currentCondition)".uppercased())
                                 .font(.headline)
-                        }
-                        
-                        Divider().frame(minHeight: 1).background(Color.orange)
-                        
-                        VStack(spacing: 8) {
-                            HStack {
-                                Text(weather.dailyHighLowAbbrev)
-                                Spacer()
-                                Text("-or-")
-                                Spacer()
-                                Label(weather.currentHighTemp, systemImage: "thermometer.high")
-                                Text("/")
-                                Label(weather.currentLowTemp, systemImage: "thermometer.low")
-                            }
-                            .padding(.horizontal,20)
+                                .italic()
+                                .offset(y: -15)
+                                .minimumScaleFactor(0.75)
+                        }//Title Temp
+
+                        VStack(alignment: .leading) {
+                            Label("24-Hour Forecast".uppercased(), systemImage: "clock")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .padding([.top,.leading], 10)
                             
-                            Divider().frame(minHeight: 1).background(Color.orange)
-                            
-                            HStack {
-                                Label("Humidity: \( weather.currentHumidity )", systemImage: "humidity.fill")
-                                Text("/")
-                                Label("DewPoint: \( weather.currentDewPoint )", systemImage: "drop.degreesign.fill")
-                            }
-                            
-                            Divider().frame(minHeight: 1).background(Color.orange)
-                            
-                            VStack {
-                                HStack(spacing:0) {
-                                    Label("\( weather.currentWindSpeed )", systemImage: "wind")
-                                    Text(" / ")
-                                    Label("\( weather.currentWindDirection )", systemImage: weather.currentWindDirImg)
-                                }
-                                
-                                Text("Gusts: \( weather.currentWindGust )")
-                            }
-                            
-                            Divider().frame(minHeight: 1).background(Color.orange)
-                            
-                            HStack {
-                                Text("\( weather.currentPressureState )")
-                                    .foregroundStyle(weather.currentPressureColor)
-                                Label("\( weather.currentPressure )", systemImage: "gauge")
-                                Image(systemName: weather.currentPressureTrend)
-                            }
-                        }
-                        
-                        VStack(spacing: 3) {
-                            Divider().frame(minHeight: 2).background(Color.orange)
-                                .padding(.top,20)
-                            
-                            Label("Feels Like \( weather.feelsLike )", systemImage: "thermometer.variable.and.figure")
-                        }
-                    }
-                    .font(.body)
-                    .foregroundStyle(.white)
-                    .padding()
-                    
-                    VStack(alignment: .leading) {
-                        Label("24-Hour Forecast".uppercased(), systemImage: "clock")
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .padding([.top,.leading])
-                        
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(weather.hourlyForecast, id: \.time) { weather in
-                                    VStack(spacing: 8) {
-                                        Text(weather.time)
-                                            .font(.caption)
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(weather.hourlyForecast, id: \.time) { weather in
+                                        VStack(spacing: 6) {
+                                            Text(weather.time)
+                                                .font(.caption)
+                                            
+                                            imgHasAFilledVersionOrNot(weather.symbolName)
+                                                .resizable()
+                                                .frame(width: 30, height: 20)
+                                                .symbolRenderingMode(.multicolor)
+                                                .aspectRatio(contentMode: .fit)
+                                            
+                                            Text(weather.temperature)
+                                                .fontWeight(.semibold)
+                                        }
+                                        .padding(.horizontal,5)
                                         
-                                        Image(systemName: "\( weather.symbolName ).fill")
-                                            .resizable()
-                                            .frame(width: 35, height: 25)
-                                            .symbolRenderingMode(.multicolor)
-                                            .aspectRatio(contentMode: .fit)
-                                        
-                                        Text(weather.temperature)
-                                            .fontWeight(.semibold)
+                                        Divider().frame(height:65)
                                     }
-                                    .padding(.vertical,10)
-                                    .padding(.horizontal,5)
                                 }
+                                .padding(.all,5)
                             }
+                        }//24-Hour
+                        .font(.body)
+                        .foregroundStyle(.white)
+                        .background(.ultraThinMaterial.opacity(0.66), in: RoundedRectangle(cornerRadius: 15.0))
+
+                        Divider()
+                            .frame(minHeight: 2)
+                            .background(Color.orange)
+                        
+                        ScrollView {
+                            HStack {
+                                VStack {
+                                    HStack {
+                                        Image(systemName: "thermometer.medium")
+                                            .font(.largeTitle)
+
+                                        VStack(alignment:.leading){
+                                            Text("H: \(weather.currentHighTemp)")
+                                            Text("L: \(weather.currentLowTemp)")
+                                        }
+                                    }
+                                    .padding(.bottom,2)
+
+                                    Text("TEMP")
+                                        .font(.system(size: 12, weight: .light))
+                                }
+                                .padding(.vertical,10)
+                                .padding(.horizontal,10)
+                                .background(.ultraThinMaterial.opacity(0.66), in: RoundedRectangle(cornerRadius: 15.0))
+
+                                Spacer()
+                                
+                                VStack {
+                                    HStack {
+                                        Image(systemName: "humidity.fill")
+                                            .font(.largeTitle)
+                                        
+                                        VStack(alignment:.leading){
+                                            Text("\(weather.currentHumidity)")
+                                            Text("\(weather.currentDewPoint)")
+                                        }
+                                    }
+                                    .padding(.bottom,2)
+                                    
+                                    Text("HUMIDITY/DEW PT.")
+                                        .font(.system(size: 12, weight: .light))
+                                }
+                                .padding(.vertical,10)
+                                .padding(.horizontal,10)
+                                .background(.ultraThinMaterial.opacity(0.66), in: RoundedRectangle(cornerRadius: 15.0))
+                            }//Temp / Humidity
+                            
+                            HStack {
+                                VStack {
+                                    HStack {
+                                        Image(systemName: "wind")
+                                            .font(.largeTitle)
+                                        
+                                        VStack(alignment:.leading){
+                                            HStack(spacing: 0) {
+                                                Text("\( weather.currentWindSpeed )")
+                                                if weather.currentWindGust.count > 4 {
+                                                    Text(", Gusts ")
+                                                }else{
+                                                    Text("")
+                                                }
+                                                Text("\( weather.currentWindGust )")
+                                                Spacer()
+                                            }
+
+                                            HStack(spacing:0) {
+                                                Image(systemName: weather.currentWindDirImg)
+                                                Text("\( weather.currentWindDirection )")
+//                                                Text(" (\( weather.currentWindDirectionAbbrev ))")
+                                                    .minimumScaleFactor(0.5)
+                                            }
+                                        }
+                                    }
+                                    .padding(.bottom,2)
+                                    
+                                    Text("WIND / GUSTING SPEEDS / DIRECTION")
+                                        .font(.system(size: 12, weight: .light))
+                                }
+                                .padding(.vertical,10)
+                                .padding(.horizontal,10)
+                                .background(.ultraThinMaterial.opacity(0.66), in: RoundedRectangle(cornerRadius: 15.0))
+                            }//Wind
+                            
+                            HStack {
+                                VStack {
+                                    HStack {
+                                        Image(systemName: "gauge")
+                                            .font(.largeTitle)
+
+                                        VStack(alignment: .leading) {
+                                            HStack(spacing:0) {
+                                                Text(weather.currentPressureState == "-" ?"" :weather.currentPressureState)
+                                                    .foregroundStyle(weather.currentPressureColor)
+                                                    .fontWeight(.heavy)
+                                                Text("\(weather.currentPressure)")
+                                            }
+
+                                            HStack {
+                                                if !weather.currentPressureTrendImg.isEmpty {
+                                                    Image(systemName: weather.currentPressureTrendImg)
+                                                }
+                                                Text(weather.currentPressureTrend.capitalized)
+                                            }
+                                        }
+                                    }
+                                    .padding(.bottom,2)
+
+                                    Text("PRESSURE")
+                                        .font(.system(size: 12, weight: .light))
+                                }
+                                .padding(.vertical,10)
+                                .padding(.horizontal,10)
+                                .background(.ultraThinMaterial.opacity(0.66), in: RoundedRectangle(cornerRadius: 15.0))
+
+                                Spacer()
+                                
+                                VStack {
+                                    HStack {
+                                        Image(systemName: "thermometer.variable.and.figure")
+                                            .font(.largeTitle)
+                                        
+                                        Text("\(weather.feelsLike)")
+                                    }
+                                    .padding(.bottom,2)
+                                    
+                                    Text("FEELS LIKE")
+                                        .font(.system(size: 12, weight: .light))
+                                }
+                                .padding(.vertical,10)
+                                .padding(.horizontal,10)
+                                .background(.ultraThinMaterial.opacity(0.66), in: RoundedRectangle(cornerRadius: 15.0))
+
+                            }//Pressure / Feels Like
+
+                            Spacer()
                         }
                     }
                     .font(.body)
                     .foregroundStyle(.white)
-                    .background(.ultraThinMaterial.opacity(0.66), in: RoundedRectangle(cornerRadius: 15.0))
-                    .padding()
+                    .padding(.horizontal,20)
                     
                     Spacer()
                     
@@ -203,7 +293,6 @@ struct ContentView: View {
                     }
                     .buttonStyle(BorderedProminentButtonStyle())
                     .padding(.horizontal,20)
-//                    .padding([.horizontal,.bottom],20)
 
                     Spacer()
                 }
@@ -220,6 +309,14 @@ struct ContentView: View {
         .environment(\.colorScheme, .dark)
     }
     
+    func imgHasAFilledVersionOrNot(_ systemName: String) -> Image {
+        if UIImage(systemName: "\(systemName).fill") != nil {
+            return Image(systemName: "\(systemName).fill")
+        }else{
+            return Image(systemName: systemName)
+        }
+    }
+                                                
     struct getCoordinatesView: View {
         @Environment(\.dismiss) private var dismiss
 
