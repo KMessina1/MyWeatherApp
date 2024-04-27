@@ -56,6 +56,8 @@ struct ContentView: View {
                             if (loc < customLoc) {
                                 Text(cities[loc].name)
                                     .font(.title)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             } else {
                                 Text("Lat: \(weather.latitude), Lon: \(weather.longitude)")
                                     .font(.headline)
@@ -258,7 +260,9 @@ struct ContentView: View {
                                 ScrollView() {
                                     VStack {
                                         ForEach(weather.tenDayForecast, id: \.day) { weather in
-                                            VStack(alignment: .leading, spacing: 6) {
+                                            VStack(alignment: .leading) {
+                                                Spacer().frame(height:20)
+                                                
                                                 HStack(spacing: 10) {
                                                     HStack {
                                                         Spacer()
@@ -289,13 +293,10 @@ struct ContentView: View {
                                                         let maxProgress = 175.0
 
                                                         Text("\( weather.lowTemperature )°")
-                                                            .padding(.trailing,0)
                                                         ProgressView(value: Lo, total: maxProgress)
                                                             .progressViewStyle(BarProgressStyle(color: .red, lo:Lo, hi: Hi))
-                                                            .offset(y:8)
-                                                            .padding(.horizontal,0)
+                                                            .offset(y:-3)
                                                         Text("\( weather.highTemperature )°")
-                                                            .padding(.leading,0)
                                                     }//ProgressView
                                                     .fontWeight(.medium)
                                                 }
@@ -386,7 +387,7 @@ struct ContentView: View {
                         
     struct BarProgressStyle: ProgressViewStyle {
         var color: Color = .purple
-        var height: Double = 20.0
+        var height: Double = 25.0
         var labelFontStyle: Font = .body
         var lo:Double
         var hi:Double
@@ -433,27 +434,40 @@ struct ContentView: View {
                                         startPoint: .leading,
                                         endPoint: .trailing
                                     ))
-                                    .stroke(Color.red, lineWidth: 2.0)
+                                    .stroke(Color.black, lineWidth: 2.0, antialiased: true)
+                                    .stroke(Color.white.opacity(0.33), lineWidth: 1.0, antialiased: true)
                                     .frame(width:(hi - lo), height: (height + 2.0))
                                     .offset(x: getTemperaturePosition(lo))
 
                                 Spacer()
                             }
                         }
+//                        .overlay { // Centered text over selection zone
+//                            let dailyTempVariance = (hi - lo)
+//                            let centerPosition = getTemperaturePosition(hi) - (getTemperaturePosition(dailyTempVariance) / 2.5)
+//                            
+//                            HStack {
+//                                Text("DAILY RANGE OF \( dailyTempVariance.formatted(.number.precision(.fractionLength(0))) )°")
+//                                    .offset(x: centerPosition, y: -20)
+//                                    .font(.system(size: 10.0, weight: .bold))
+//                                
+//                                Spacer()
+//                            }
+//                        }
                         .overlay {
                             let dailyTempVariance = (hi - lo)
-                            let centerPosition = getTemperaturePosition(hi) - (getTemperaturePosition(dailyTempVariance) / 2.5)
-
-                            HStack {
-                                Text("⇆\( dailyTempVariance.formatted(.number.precision(.fractionLength(0))) )°")
-                                    .offset(x: centerPosition, y: -16)
+                            ZStack {
+                                Divider()
+                                Text("DAILY RANGE OF \( dailyTempVariance.formatted(.number.precision(.fractionLength(0))) )°")
                                     .font(.system(size: 10.0, weight: .bold))
-                                
-                                Spacer()
+                                    .padding(.horizontal,10)
+                                    .background(Rectangle().fill(.clear))
                             }
+                            .offset(y: -20)
                         }
                 }
             }
+            .offset(y:6)
         }
     }
     
