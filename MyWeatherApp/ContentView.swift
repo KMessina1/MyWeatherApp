@@ -395,8 +395,6 @@ struct ContentView: View {
         }
 
         func makeBody(configuration: Configuration) -> some View {
-            let progress = configuration.fractionCompleted ?? 0.0
-            
             GeometryReader { geometry in
                 VStack(alignment: .leading) {
                     configuration.label
