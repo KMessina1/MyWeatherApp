@@ -55,7 +55,7 @@ struct city {
     @Published var currentDewPoint:String = ""
 
     @Published var hourlyForecast:[HourWeather] = []
-    @Published var tenDayForecast:[DayWeather] = []
+    @Published var tenDayForecast:[DailyWeather] = []
 
     @Published var isLoading: Bool = false
     
@@ -155,6 +155,7 @@ struct city {
                     self.currentWindGust = "\( windGust ) mph"
 
                     //Hourly Format
+                    self.hourlyForecast.removeAll()
                     weather.hourlyForecast.forecast.forEach { hour in
                         if self.hourlyForecast.count < 24 {
                             if self.isSameHourOrLater(date1: hour.date, date2: Date()) {
@@ -169,15 +170,19 @@ struct city {
                         }
                     }
                     
-//                    //Daily Format
-//                    weather.dailyForecast.forecast.forEach { day in
-//                        self.tenDayForecast.append(DayWeather(
-//                            day: self.dayFormatter(date: day.date),
-//                            symbolName: day.symbolName,
-//                            lowTemperature: "\( day.lowTemperature.formatted().dropLast() )",
-//                            highTemperature: "\( day.highTemperature.formatted().dropLast() )"
-//                        ))
-//                    }
+                    //Daily Format
+                    self.tenDayForecast.removeAll()
+                    weather.dailyForecast.forecast.forEach { day in
+                        let low = day.lowTemperature.converted(to: self.tempUnits).value.formatted(.number.precision(.fractionLength(0)))
+                        let high = day.highTemperature.converted(to: self.tempUnits).value.formatted(.number.precision(.fractionLength(0)))
+
+                        self.tenDayForecast.append(DailyWeather(
+                            day: self.dayFormatter(date: day.date),
+                            symbolName: day.symbolName,
+                            lowTemperature: "\( low )",
+                            highTemperature: "\( high )"
+                        ))
+                    }
 
                     self.isLoading = false
                     print("Completed Fetching Weather...")
@@ -230,7 +235,7 @@ struct HourWeather {
     let temperature: String
 }
 
-struct DayWeather {
+struct DailyWeather {
     let day: String
     let symbolName: String
     let lowTemperature: String

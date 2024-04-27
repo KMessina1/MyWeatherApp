@@ -91,10 +91,11 @@ struct ContentView: View {
                                         VStack(spacing: 6) {
                                             Text(weather.time)
                                                 .font(.caption)
-                                            
+                                                .fontWeight(.bold)
+
                                             imgHasAFilledVersionOrNot(weather.symbolName)
                                                 .resizable()
-                                                .frame(width: 30, height: 20)
+                                                .frame(width: 35, height: 30)
                                                 .symbolRenderingMode(.multicolor)
                                                 .aspectRatio(contentMode: .fit)
                                             
@@ -181,7 +182,6 @@ struct ContentView: View {
                                             HStack(spacing:0) {
                                                 Image(systemName: weather.currentWindDirImg)
                                                 Text("\( weather.currentWindDirection )")
-//                                                Text(" (\( weather.currentWindDirectionAbbrev ))")
                                                     .minimumScaleFactor(0.5)
                                             }
                                         }
@@ -246,6 +246,69 @@ struct ContentView: View {
                                 .background(.ultraThinMaterial.opacity(0.66), in: RoundedRectangle(cornerRadius: 15.0))
 
                             }//Pressure / Feels Like
+
+                            Spacer()
+                            
+                            VStack(alignment: .leading) {
+                                Label("10-Day Forecast".uppercased(), systemImage: "clock")
+                                    .font(.caption)
+                                    .fontWeight(.bold)
+                                    .padding([.top,.leading], 10)
+                                
+                                ScrollView() {
+                                    VStack {
+                                        ForEach(weather.tenDayForecast, id: \.day) { weather in
+                                            VStack(alignment: .leading, spacing: 6) {
+                                                HStack(spacing: 10) {
+                                                    HStack {
+                                                        Text(weather.day)
+                                                            .font(.title3)
+                                                            .fontWeight(.bold)
+                                                        Spacer()
+                                                    }
+                                                    .frame(width: 70)
+
+                                                    imgHasAFilledVersionOrNot(weather.symbolName)
+                                                        .resizable()
+                                                        .frame(width: 35, height: 30)
+                                                        .symbolRenderingMode(.multicolor)
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .padding(.trailing,5)
+    
+                                                    HStack {
+                                                        let Hi:Double = Double(weather.highTemperature) ?? 0.0
+                                                        let Lo:Double = Double(weather.lowTemperature) ?? 0.0
+                                                        /* Because ProgressView can't go below 0;
+                                                            0 representing -50 degrees
+                                                            total 100 representing 125
+                                                         
+                                                            so adding 50 to current lo and hi gives proper range on 0-175
+                                                            versus -50 to 125 scale which is a total of 75 difference.
+                                                        */
+                                                        let maxProgress = 175.0
+
+                                                        Text("\( weather.lowTemperature )°")
+                                                        ProgressView(value: Lo, total: maxProgress)
+                                                            .progressViewStyle(BarProgressStyle(color: .red, lo:Lo, hi: Hi))
+                                                            .offset(y:6)
+                                                        Text("\( weather.highTemperature )°")
+                                                    }//ProgressView
+                                                    .fontWeight(.semibold)
+                                                }
+                                                
+                                                Spacer()
+                                            }
+                                            .padding(.horizontal,5)
+                                            
+                                            Divider()
+                                        }
+                                    }
+                                    .padding(.all,5)
+                                }
+                            }//10-Day
+                            .font(.body)
+                            .foregroundStyle(.white)
+                            .background(.ultraThinMaterial.opacity(0.66), in: RoundedRectangle(cornerRadius: 15.0))
 
                             Spacer()
                         }
@@ -316,7 +379,82 @@ struct ContentView: View {
             return Image(systemName: systemName)
         }
     }
-                                                
+                        
+    struct BarProgressStyle: ProgressViewStyle {
+        var color: Color = .purple
+        var height: Double = 20.0
+        var labelFontStyle: Font = .body
+        var lo:Double
+        var hi:Double
+        var minProgressValue:Double = 0.0
+        var maxProgressValue:Double = 175.0
+        var offsetProgressValue:Double = (75.0 / 3.0) // Calculation below zero not counting max being above 100
+
+        func getTemperaturePosition(_ temperature:Double) -> Double {
+            ((temperature / maxProgressValue) * 100) + offsetProgressValue
+        }
+
+        func makeBody(configuration: Configuration) -> some View {
+            let progress = configuration.fractionCompleted ?? 0.0
+            
+            GeometryReader { geometry in
+                VStack(alignment: .leading) {
+                    configuration.label
+                        .font(labelFontStyle)
+                    
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .fill(LinearGradient(
+                            stops: [
+                                Gradient.Stop(color: .blue, location: 0.0),
+                                Gradient.Stop(color: .cyan, location: 0.33),
+                                Gradient.Stop(color: .green, location: 0.5),
+                                Gradient.Stop(color: .orange, location: 0.65),
+                                Gradient.Stop(color: .red, location: 1.0),
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
+                        .frame(width: geometry.size.width, height: height)
+                        .overlay {
+                            HStack {
+                                RoundedRectangle(cornerRadius: 5.0)
+                                    .fill(LinearGradient(
+                                        colors: [
+                                            .clear,
+                                            .white.opacity(0.15),
+                                            .white.opacity(0.33),
+                                            .white.opacity(0.66),
+                                            .white.opacity(0.33),
+                                            .white.opacity(0.15),
+                                            .clear
+                                        ],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    ))
+                                    .stroke(Color.red, lineWidth: 2.0)
+                                    .frame(width:(hi - lo), height: (height + 2.0))
+                                    .offset(x: getTemperaturePosition(lo))
+
+                                Spacer()
+                            }
+                        }
+                        .overlay {
+                            let dailyTempVariance = (hi - lo)
+                            let centerPosition = getTemperaturePosition(hi) - (getTemperaturePosition(dailyTempVariance) / 2.5)
+
+                            HStack {
+                                Text("⇆\( dailyTempVariance.formatted(.number.precision(.fractionLength(0))) )°")
+                                    .offset(x: centerPosition, y: -16)
+                                    .font(.caption2)
+                                
+                                Spacer()
+                            }
+                        }
+                }
+            }
+        }
+    }
+    
     struct getCoordinatesView: View {
         @Environment(\.dismiss) private var dismiss
 
