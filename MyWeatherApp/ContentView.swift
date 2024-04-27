@@ -261,12 +261,13 @@ struct ContentView: View {
                                             VStack(alignment: .leading, spacing: 6) {
                                                 HStack(spacing: 10) {
                                                     HStack {
-                                                        Text(weather.day)
-                                                            .font(.title3)
-                                                            .fontWeight(.bold)
                                                         Spacer()
+                                                        Text(weather.day)
+                                                            .font(.headline)
+                                                            .fontWeight(.bold)
+                                                            .minimumScaleFactor(0.75)
                                                     }
-                                                    .frame(width: 70)
+                                                    .frame(width: 75)
 
                                                     imgHasAFilledVersionOrNot(weather.symbolName)
                                                         .resizable()
@@ -288,12 +289,15 @@ struct ContentView: View {
                                                         let maxProgress = 175.0
 
                                                         Text("\( weather.lowTemperature )°")
+                                                            .padding(.trailing,0)
                                                         ProgressView(value: Lo, total: maxProgress)
                                                             .progressViewStyle(BarProgressStyle(color: .red, lo:Lo, hi: Hi))
-                                                            .offset(y:6)
+                                                            .offset(y:8)
+                                                            .padding(.horizontal,0)
                                                         Text("\( weather.highTemperature )°")
+                                                            .padding(.leading,0)
                                                     }//ProgressView
-                                                    .fontWeight(.semibold)
+                                                    .fontWeight(.medium)
                                                 }
                                                 
                                                 Spacer()
@@ -443,7 +447,7 @@ struct ContentView: View {
                             HStack {
                                 Text("⇆\( dailyTempVariance.formatted(.number.precision(.fractionLength(0))) )°")
                                     .offset(x: centerPosition, y: -16)
-                                    .font(.caption2)
+                                    .font(.system(size: 10.0, weight: .bold))
                                 
                                 Spacer()
                             }
